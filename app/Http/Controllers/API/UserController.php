@@ -86,8 +86,43 @@ class UserController extends Controller
             'cedula' => ['required','numeric','digits_between:1,8'],
             'telefono' => ['required','numeric','digits:11'],
             'apellido' => ['required','string','max:255'],
+            'img_url' => ['sometimes', 'regex:(jpeg|jpg|png)'],
         ]);
+        if($request->img_url) {
+            $name = time() . '.' . explode('/',explode(':',substr($request->img_url,0,strpos($request->img_url,";")))[1])[1];
+
+        \Image::make($request->img_url)->save(public_path('img/').$name); 
+        $request->merge(['img_url' => $name]);
+
+        }
+
         $user->update($request->all());
+
+    }
+
+    public function updateProfile(Request $request) {
+        $user = auth('api')->user();
+
+        return $request->img_url;
+        // $this->validate($request, [
+        //     'nombre' => ['required', 'string', 'max:255'],
+        //     'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+        //     'password' => ['sometimes', 'string', 'min:8', 'confirmed'],
+        //     'cedula' => ['required','numeric','digits_between:1,8'],
+        //     'telefono' => ['required','numeric','digits:11'],
+        //     'apellido' => ['required','string','max:255'],
+        //     'img_url' => ['sometimes', 'regex:(jpeg|jpg|png)'],
+        // ]);
+
+        // if($request->img_url) {
+        //     $name = time() . '.' . explode('/',explode(':',substr($request->img_url,0,strpos($request->img_url,";")))[1])[1];
+
+        // \Image::make($request->img_url)->save(public_path('img/').$name); 
+        // $request->merge(['img_url' => $name]);
+
+        // }
+
+        // $user->update($request->all());
     }
 
     /**

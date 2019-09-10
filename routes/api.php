@@ -18,4 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResources(['user' => 'API\UserController']);
+Route::apiResources(['files' => 'API\FilesController']);
 Route::get('profile', 'API\UserController@profile');
+Route::put('profile', 'API\UserController@updateProfile');
+Route::get('ownFiles/{id}', 'API\FilesController@ownFiles');
+Route::get('downloadFile/{id}', 'API\FilesController@downloadFile');
